@@ -4,42 +4,43 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Informe o tamanho da página (em bytes): ");
-        int tamanhoPagina = scanner.nextInt();
+        System.out.println("Enter the page size (in bytes): ");
+        int pageSize = scanner.nextInt();
 
-        System.out.println("Informe o número de páginas");
-        int numPaginas = scanner.nextInt();
+        System.out.println("Enter the number of pages: ");
+        int numPages = scanner.nextInt();
 
-        int[] tabelaPaginas = new int[numPaginas];
-        System.out.println("Informe o quadro correspondente para cada página (-1 se não existir):");
+        int[] pageTable = new int[numPages];
+        System.out.println("Enter the corresponding frame for each page (-1 if it doesn't exist):");
 
-        for (int i = 0; i < numPaginas; i++) {
-            System.out.print("Pagina " + i + ": ");
-            tabelaPaginas[i] = scanner.nextInt();
+        for (int i = 0; i < numPages; i++) {
+            System.out.print("Page " + i + ": ");
+            pageTable[i] = scanner.nextInt();
         }
 
         scanner.nextLine();
 
-        System.out.print("Informe os endereços lógicos a converter, separados por vírgula: ");
-        String enderecosLogicosStr = scanner.nextLine();
-        String[] enderecosLogicosArr = enderecosLogicosStr.split(",");
+        System.out.print("Enter the logical addresses to convert, separated by commas: ");
+        String logicalAddressesStr = scanner.nextLine();
+        String[] logicalAddressesArr = logicalAddressesStr.split(",");
 
-        for (String enderecoStr : enderecosLogicosArr) {
-            int enderecoLogico = Integer.parseInt(enderecoStr.trim());
+        for (String addressStr : logicalAddressesArr) {
+            int logicalAddress = Integer.parseInt(addressStr.trim());
 
 
-            int paginaLogica = enderecoLogico / tamanhoPagina;
-            int deslocamento = enderecoLogico % tamanhoPagina;
+            int logicalPage = logicalAddress / pageSize;
+            int offset = logicalAddress % pageSize;
 
-            if (paginaLogica < numPaginas && tabelaPaginas[paginaLogica] != -1) {
-                int quadroFisico = tabelaPaginas[paginaLogica];
-                int enderecoFisico = (quadroFisico * tamanhoPagina) + deslocamento;
-                System.out.println("Endereço Lógico: " + enderecoLogico +
-                        " -> Página " + paginaLogica + ", Quadro " + quadroFisico +
-                        ", Endereço Físico: " + enderecoFisico);
+
+            if (logicalPage < numPages && pageTable[logicalPage] != -1) {
+                int physicalFrame = pageTable[logicalPage];
+                int physicalAddress = (physicalFrame * pageSize) + offset;
+                System.out.println("Logical Address: " + logicalAddress +
+                        " -> Page " + logicalPage + ", Frame " + physicalFrame +
+                        ", Physical Address: " + physicalAddress);
             } else {
-                System.out.println("Endereço Lógico: " + enderecoLogico +
-                        " -> Página " + paginaLogica + " não mapeada (Gera uma Interrupção).");
+                System.out.println("Logical Address: " + logicalAddress +
+                        " -> Page " + logicalPage + " not mapped (Generates an Interruption).");
             }
         }
         scanner.close();
